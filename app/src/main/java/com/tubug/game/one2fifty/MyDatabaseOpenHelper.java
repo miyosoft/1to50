@@ -1,4 +1,4 @@
-package com.game.esc.onetofifty;
+package com.tubug.game.one2fifty;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -1,22 +1,23 @@
-package com.game.esc.onetofifty;
+package com.tubug.game.one2fifty;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
+
+
+import com.tubug.game.one2fifty.common.ScreenUtil;
 
 import java.util.Random;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
     int num[]= new int[50];
@@ -25,6 +26,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     ImageView btn[] = new ImageView[25];
     int btnIdx;
     int count = 0;
+    Animation animation;
     private String m_Text = "";
     int imgBtn[] = {R.drawable.num1,R.drawable.num2,R.drawable.num3,R.drawable.num4,R.drawable.num5,
             R.drawable.num6,R.drawable.num7,R.drawable.num8,R.drawable.num9,R.drawable.num10,
@@ -52,17 +54,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         for(int i = 0 ; i< 50 ; ++i){
             num[i] = i;
         }
+        int w =  ScreenUtil.getScreenWidth(this);
+        int h = ScreenUtil.getScreenHeight(this);
 
         for(btnIdx = 0; btnIdx< 25 ; btnIdx++) {
             btn[btnIdx] = (ImageView) findViewById(numBtn[btnIdx]);
             btn[btnIdx].setOnClickListener(this);
             btn[btnIdx].setTag(btnIdx);
+            ViewGroup.LayoutParams params = btn[btnIdx].getLayoutParams();
+            params.width =( w -100 ) / 5;
+            params.height = params.width;
+            btn[btnIdx].setLayoutParams(params);
         }
 
         shuffle(num,0,25);
         shuffle(num,25,50);
+        animation = AnimationUtils.loadAnimation(this,R.anim.anim_set);
         for(int i = 0 ; i<25 ; ++i){
             btn[i].setImageResource(imgBtn[num[i]]);
+            btn[i].startAnimation(animation);
         }
     }
     void shuffle(int num[], int start, int end){
@@ -78,13 +88,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public void inputNameDialog(final long clearTime ){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("축하합니다!*^^*"+clearTime+"초만에 클리어하셨습니다.");
+        builder.setTitle(getString(R.string.title_1)+clearTime+getString(R.string.title_2));
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
@@ -92,7 +102,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -125,6 +136,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }else{
                     btn[position].setImageResource(imgBtn[num[position+25]]);
+                    btn[position].startAnimation(animation);
                 }
                 count++;
             }

@@ -1,4 +1,4 @@
-package com.game.esc.onetofifty;
+package com.tubug.game.one2fifty.onetofifty;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

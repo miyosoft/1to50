@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">oneToFifty</string>
+    <string name="title_1">恭喜您!*^^*</string>
+    <string name="title_2">秒内完成</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>
